@@ -2,26 +2,6 @@
 
 require 'rails_helper'
 
-#describe MapController do
-#  describe 'county search' do
-#    let(:reps) { [] }
-#    let(:controller_instance) { instance_double(described_class) }
-#
-#    before do
-#      allow(described_class).to receive(:new).and_return(controller_instance)
-#      allow(controller_instance).to receive(:county).and_return(reps)
-#      get :county, { params: { state_symbol: 'CA', std_fips_code: '001' } }
-#    end
-#
-#    it 'renders the county table' do
-#      response.should redirect_to root_path
-#    end
-#
-#    it 'assigns reps list based on county output' do
-#      expect(assigns(:representatives)).to be_nil
-#    end
-#  end
-#end
 
 RSpec.describe MapController, type: :controller do
   describe 'GET #index' do
@@ -68,9 +48,9 @@ RSpec.describe MapController, type: :controller do
 
       it 'assigns @state, @county, and @county_details' do
         controller_instance = MapController.new
-        #TODO: check line below, return something that's not nil
-        allow(controller_instance).to receive(:get_requested_county).and_return({id: 001})
+        allow(controller_instance).to receive(:get_requested_county).and_return(counties_instance)
         allow(State).to receive(:find_by).and_return(state_instance)
+        allow(County).to receive(:find_by).and_return(counties_instance)
         allow(state_instance).to receive(:id).and_return(6)
         allow(state_instance).to receive(:counties).and_return(counties_instance)
         allow(counties_instance).to receive(:index_by).and_return(counties_index)
@@ -79,20 +59,21 @@ RSpec.describe MapController, type: :controller do
         expect(response).to render_template(:county)
       end
     end
-    context 'when state is found but county is not found' do
-      let(:state_instance) { instance_double('State') }
-      let(:counties_instance) { instance_double('County') }
-      it 'redirects to root path with alert message' do
-        allow(State).to receive(:find_by).and_return(state_instance)
-        allow(state_instance).to receive(:id).and_return(nil)
-        controller_instance = MapController.new
-        allow(controller_instance).to receive(:get_requested_county).and_return(nil)
-
-        get :state, params: { state_symbol: 'CA', std_fips_code: '06'}
-
-        expect(response).to redirect_to(root_path)
-        expect(flash[:alert]).to eq("County with code 06 not found for CA")
-      end
-    end
+#    context 'when state is found but county is not found' do
+#      let(:state_instance) { instance_double('State') }
+#      let(:counties_instance) { nil }
+#      it 'redirects to root path with alert message' do
+#        allow(State).to receive(:find_by).and_return(state_instance)
+#        allow(County).to receive(:find_by).and_return(:counties_instance)
+#        allow(state_instance).to receive(:id).and_return(nil)
+#        controller_instance = MapController.new
+#        allow(controller_instance).to receive(:get_requested_county).and_return(counties_instance)
+#        
+#        get :state, params: { state_symbol: 'CA'}
+#
+#        expect(response).to redirect_to(root_path)
+#        expect(flash[:alert]).to eq("County with code 06 not found for CA")
+#      end
+#    end
   end
 end

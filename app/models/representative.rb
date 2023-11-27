@@ -3,11 +3,6 @@
 class Representative < ApplicationRecord
   has_many :news_items, dependent: :delete_all
 
-  def self.format_address(address)
-    return '' unless address
-    "#{address['line1']}, #{address['city']}, #{address['state']} #{address['zip']}"
-  end
-
   def self.civic_api_to_representative_params(rep_info)
     reps = []
     if rep_info == []
@@ -33,7 +28,7 @@ class Representative < ApplicationRecord
           name: official.name,
           ocdid: ocdid_temp,
           title: title_temp,
-          contact_address: format_address(official.address),
+          contact_address: official.address,
           political_party: official.party,
           photo_url: official.photo_url
         })
