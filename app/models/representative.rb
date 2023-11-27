@@ -10,7 +10,10 @@ class Representative < ApplicationRecord
 
   def self.civic_api_to_representative_params(rep_info)
     reps = []
-
+    if rep_info == []
+      return []
+    end
+    
     rep_info.officials.each_with_index do |official, index|
       ocdid_temp = ''
       title_temp = ''
@@ -32,7 +35,7 @@ class Representative < ApplicationRecord
           title: title_temp,
           contact_address: format_address(official.address),
           political_party: official.party,
-          photo_url: official.photoUrl
+          photo_url: official.photo_url
         })
         reps.push(rep)
       end
