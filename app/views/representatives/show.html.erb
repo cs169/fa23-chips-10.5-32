@@ -1,0 +1,14 @@
+<div class="container">
+  <h2><%= @representative.name %></h2>
+  <p>Contact Address: <%= @representative.contact_address %></p>
+  <p>Political Party: <%= @representative.political_party %></p>
+  <img src="<%= @representative.photo_url %>" alt="Representative Photo" width="200">
+  <!-- Add other details as needed -->
+  <% @representative.news_items.each do |news_item| %>
+    <div class="news-item">
+      <h4><%= news_item.title %></h4>
+      <p><%= news_item.description %></p>
+      <a href="<%= news_item.link %>" target="_blank">Read More</a>
+    </div>
+  <% end %>
+</div>
