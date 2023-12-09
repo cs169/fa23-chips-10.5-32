@@ -1,0 +1,22 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <% if @data %>
+        <div class="card">
+          <div class="card-header">
+            Candidate Names
+          </div>
+          <ul class="list-group list-group-flush">
+            <% @data.each do |candidate| %>
+              <li class="list-group-item"><%= candidate["name"] %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% else %>
+        <div class="alert alert-info text-center" role="alert" style="font-size: 18px; margin-top: 50px;">
+          No candidates found.
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
