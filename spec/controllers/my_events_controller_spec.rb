@@ -25,6 +25,10 @@ RSpec.describe MyEventsController, type: :controller do
 
   let(:event) { instance_double('Event', valid?: true) }
 
+  let!(:user) do
+    User.create!(provider: 1, uid: '735435765', email: 'brasberry.berkeley.edu', first_name: 'angel', last_name: 'meoww')
+  end
+
   before do
     allow(controller).to receive(:set_event)
     allow(Event).to receive(:new).and_return(event)
@@ -32,6 +36,24 @@ RSpec.describe MyEventsController, type: :controller do
     allow(event).to receive(:update).and_return(true)
     allow(Event).to receive(:find).and_return(event)
     allow(event).to receive(:destroy).and_return(true)
+  end
+
+  describe 'GET new' do
+    context 'user logged in' do
+      before { session[:current_user_id] = user.id }
+
+      it 'assigns a new event as @event' do
+        get :new
+        expect(assigns(:event)).to be_a_new(Event)
+      end
+    end
+    
+    context 'user not logged in' do
+      it 'redirects to login page' do
+        get :new
+        expect(response).to redirect_to(login_path)
+      end
+    end
   end
 
   describe 'POST #create' do

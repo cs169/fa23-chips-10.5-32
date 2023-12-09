@@ -52,7 +52,10 @@ RSpec.describe LoginController, type: :controller do
 
     it 'logout' do
       get :logout
+      expect(response).to redirect_to(root_path)
+      expect(flash[:notice]).to eq('You have successfully logged out.')
       expect(session[:current_user_id]).to be_nil
     end
+
   end
 end
